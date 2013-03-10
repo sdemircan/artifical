@@ -10,9 +10,10 @@ class Neuron:
         self.activation = 1
         self.dentrites = []
         self.currentDentrite = 0
+        self.sigma = 0
 
         self.output = 0
-        self.delta = 0
+        self.deltaBias = 0
         self.error = 0
 
         if (weigths != None) and (numberOfDentrites == len(weigths)):
@@ -41,7 +42,20 @@ class Neuron:
         self.output = 0
         self.error = 0
 
-    def calculateError(expected):
+    def calculateErrorOutput(self, expected):
         self.error = expected - self.output
         return self.error
+    
+    def reCalculateOutputNeuronWeights(self, learningRate, momentum, outputs):
+        self.sigma = self.output * (1 - self.output) * self.error
+        self.deltaBias = learningRate * self.sigma + momentum * self.deltaBias
+        self.bias += self.deltaBias
+        print self.bias
+        for i in range(len(outputs)):
+            break
+            delta = learningRate * self.sigma * outputs[i] + momentum * self.dentrites[i].delta
+            self.dentrites[i].delta = delta
+            self.dentrites[i].weight += delta
+            print self.dentrites[i].weight
+        
 

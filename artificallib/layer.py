@@ -30,15 +30,23 @@ class Layer:
         errors = []
 
         for i in neuron in self.neurons:
-            errors.add(neuron.error)
+            errors.append(neuron.error)
+
+        return errors
+
+    def getSigmas(self):
+        errors = []
+
+        for i in neuron in self.neurons:
+            errors.append(neuron.sigma)
 
         return errors
 
     def getOutputs(self):
         outputs = []
 
-        for i in neuron in self.neurons:
-            outputs.add(neuron.output)
+        for neuron in self.neurons:
+            outputs.append(neuron.output)
 
         return outputs
 
@@ -46,6 +54,6 @@ class Layer:
         weights = []
 
         for i in neuron in self.neurons:
-            weights.add(neuron.dentrites[index].weight)
+            weights.append(neuron.dentrites[index].weight)
 
         return weights
