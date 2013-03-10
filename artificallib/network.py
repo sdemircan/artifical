@@ -81,14 +81,20 @@ class Network:
                 for value in output:
                     sigmaValues.append((1-value)*value*error)
 
-                for layerIndex in range(len(self.layers)-1, -1, -1):
+                for layerIndex in range(len(self.layers)-2, -1, -1):
                     for neuronIndex in range(0, len(self.layers[layerIndex].neurons)):
-                        if len(self.layers) -1 == layerIndex: #output layer
-                            self.layers[layerIndex].neurons[neuronIndex].reCalculateOutputNeuronWeights(self.learningRate, 
-                                            self.momentum, self.layers[layerIndex-1].getOutputs())
-                    
-                        break
-                    break
+                        if layerIndex == 0:
+                            inputValues = listOfInputValues[i]
+                        else:
+                            inputValues = self.layers[layerIndex -1].getOutputs()
+                        self.layers[layerIndex].neurons[neuronIndex].reCalculateNeuronWeights(self.learningRate, 
+                                            self.momentum, self.layers[layerIndex + 1].getWeights(neuronIndex),
+                                            self.layers[layerIndex + 1].getSigmas(), inputValues)
+                
+                #output
+                for neuronIndex in range(0, len(self.layers[-1].neurons)):
+                    self.layers[-1].neurons[neuronIndex].reCalculateOutputNeuronWeights(self.learningRate, 
+                                        self.momentum, self.layers[-2].getOutputs())
 
 
 
