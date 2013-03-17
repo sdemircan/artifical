@@ -4,7 +4,7 @@ from artificallib.layer import Layer
 
 class Network:
 
-    def __init__(self, learningRate, momentum, layers, trainingCycles=100, errorTolerance=0.0):
+    def __init__(self, learningRate, momentum, layers, trainingCycles=1000, errorTolerance=0.0):
         self.learningRate = learningRate
         self.momentum = momentum
 
@@ -32,6 +32,24 @@ class Network:
                     counter += 1
 
         return counter
+    
+    def getWeights(self):
+        weights = []
+
+        for layer in self.layers:
+            for neuron in layer.neurons:
+                for dentrite in neuron.dentrites:
+                    weights.append(dentrite.weight)
+
+        return weights
+
+    def getBias(self):
+        bias = []
+
+        for layer in self.layers:
+            for neuron in layer.neurons:
+                bias.append(neuron.bias)
+        return bias
 
     def setWeights(self, weigths):
         if self.getWeightCount() == len(weigths):
@@ -64,7 +82,7 @@ class Network:
             print "expectedOutputs length not equal listOfInputValues length !"
             return
 
-        for i in range(1):
+        for i in range(self.TRAINING_CYCLES):
             #For every input
             for j in range(len(listOfInputValues)):
                 output = self.process(listOfInputValues[j])
@@ -84,7 +102,7 @@ class Network:
                 for layerIndex in range(len(self.layers)-2, -1, -1):
                     for neuronIndex in range(0, len(self.layers[layerIndex].neurons)):
                         if layerIndex == 0:
-                            inputValues = listOfInputValues[i]
+                            inputValues = listOfInputValues[j]
                         else:
                             inputValues = self.layers[layerIndex -1].getOutputs()
                         self.layers[layerIndex].neurons[neuronIndex].reCalculateNeuronWeights(self.learningRate, 
