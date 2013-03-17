@@ -1,5 +1,7 @@
 #backup files
 *~
+#swap
+*.swp
 
 *.py[cod]
 
